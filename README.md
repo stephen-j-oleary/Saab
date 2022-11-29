@@ -58,7 +58,7 @@ The `listen` function starts the listener on the given `wv`
 
 ### In WebView:
 
-> The package will add an `saab` object on the `window` in the WebView
+The package will add an `saab` object on the `window` in the WebView
 
 ```javascript
 // window.saab.request(config)
