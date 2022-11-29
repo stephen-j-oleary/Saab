@@ -1,0 +1,22 @@
+{
+  "name": "saab",
+  "version": "1.0.0",
+  "description": "Utility for two-way communication between Scriptable and WebView",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stephen-j-oleary/saab.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "preuse": "npm install",
+    "use": "cpy ./index.js ~/Library/Mobile\\ Documents/iCloud\\~dk\\~simonbs\\~Scriptable/Documents --rename=Saab.js"
+  },
+  "keywords": [
+    "express",
+    "axios",
+    "scriptable"
+  ],
+  "devDependencies": {
+    "cpy-cli": "^4.2.0"
+  }
+}
