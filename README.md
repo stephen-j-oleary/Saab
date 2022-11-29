@@ -1,8 +1,5 @@
 # Scriptable as a Backend
 
-[![NPM version][npm-image]][npm-url]
-[![NPM downloads][downloads-image]][downloads-url]
-
 A Scriptable package that handles two-way communication between a WebView and the Scriptable app.
 
 ## Installation
