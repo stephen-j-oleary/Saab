@@ -13,9 +13,6 @@
     "axios",
     "scriptable"
   ],
-  "devDependencies": {
-    "cpy-cli": "^4.2.0"
-  },
   "dependencies": {
     "path-to-regexp": "^8.2.0"
   }
