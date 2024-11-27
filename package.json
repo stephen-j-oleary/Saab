@@ -7,13 +7,20 @@
     "type": "git",
     "url": "https://github.com/stephen-j-oleary/saab.git"
   },
-  "main": "index.js",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
   "keywords": [
     "express",
     "axios",
     "scriptable"
   ],
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "path-to-regexp": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/scriptable-ios": "^1.7.7"
   }
 }
