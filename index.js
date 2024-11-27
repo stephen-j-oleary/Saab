@@ -61,6 +61,14 @@ module.exports = function Saab() {
             ...config
           });
         },
+        async patch(path, payload = {}, config = {}) {
+          return this.request({
+            method: "patch",
+            path,
+            payload,
+            ...config
+          });
+        },
         async put(path, payload = {}, config = {}) {
           return this.request({
             method: "put",
@@ -168,6 +176,9 @@ module.exports = function Saab() {
     },
     post(path, handler) {
       addHandler("post", path, handler);
+    },
+    patch(path, handler) {
+      addHandler("patch", path, handler);
     },
     put(path, handler) {
       addHandler("put", path, handler);
