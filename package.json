@@ -2,6 +2,7 @@
   "name": "saab",
   "version": "1.0.0",
   "description": "Utility for two-way communication between Scriptable and WebView",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/stephen-j-oleary/saab.git"
@@ -18,5 +19,8 @@
   ],
   "devDependencies": {
     "cpy-cli": "^4.2.0"
+  },
+  "dependencies": {
+    "path-to-regexp": "^8.2.0"
   }
 }
