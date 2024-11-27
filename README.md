@@ -2,25 +2,12 @@
 
 A Scriptable package that handles two-way communication between a WebView and the Scriptable app.
 
-## Installation
-
-> Requires the [`path-to-regexp-scriptable`](https://github.com/stephen-j-oleary/path-to-regexp-scriptable/) package.\
-> Ensure it is installed in your Scriptable folder as well.
-
-To start using the package in Scriptable, either copy index.js to your Scriptable folder or run:
-
-```
-npm run use
-```
-
-By default, the package will be copied to `~/Library/Mobile Documents/iCloud~dk~simonbs~Scriptable/Documents` and named `Saab`
-
 ## Usage
 
 ### In Scriptable:
 
 ```javascript
-const Saab = importModule("Saab");
+const Saab = require("Saab");
 const saab = Saab();
 
 // saab.use(path, handler)
