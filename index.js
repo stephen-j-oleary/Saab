@@ -1,9 +1,9 @@
 
 // Github repo located at https://github.com/stephen-j-oleary/Saab
 
-const { match } = importModule("path-to-regexp");
+import { match } from "path-to-regexp";
 
-module.exports = function Saab() {
+export default function Saab() {
   let isConfigured = false;
   const handlers = [];
 
