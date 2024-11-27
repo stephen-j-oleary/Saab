@@ -1,12 +1,17 @@
 "use strict";
 // Github repo located at https://github.com/stephen-j-oleary/Saab
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BrowserAdapter = exports.ScriptableWebViewAdapter = void 0;
 const path_to_regexp_1 = require("path-to-regexp");
-function Saab() {
+var Scriptable_1 = require("./adapters/Scriptable");
+Object.defineProperty(exports, "ScriptableWebViewAdapter", { enumerable: true, get: function () { return Scriptable_1.ScriptableWebViewAdapter; } });
+var Browser_1 = require("./adapters/Browser");
+Object.defineProperty(exports, "BrowserAdapter", { enumerable: true, get: function () { return Browser_1.BrowserAdapter; } });
+function Saab(adapter) {
     let isConfigured = false;
     const handlers = [];
-    async function config(wv) {
-        await wv.evaluateJavaScript(`
+    async function config() {
+        await adapter.runInContext(`
       window.saab = {
         randomCounter: 0,
         requests: [],
@@ -110,7 +115,7 @@ function Saab() {
         }
       };
       completion();
-    `, true);
+    `);
         isConfigured = true;
         return;
     }
@@ -137,19 +142,19 @@ function Saab() {
         return matchingHandlers[0] || null;
     }
     // Listens for dispatch events from the WebView
-    async function listen(wv, js = "") {
+    async function listen(js = "") {
         if (!isConfigured)
-            await config(wv);
-        const { id, ...req } = await wv.evaluateJavaScript(js, true);
+            await config();
+        const { id, ...req } = await adapter.runInContext(js) || {};
         const res = {
             error: (error) => {
-                listen(wv, `window.saab.callback("${id}", ${JSON.stringify(error instanceof Error ? error.message : error)}, undefined)`);
+                listen(`window.saab.callback("${id}", ${JSON.stringify(error instanceof Error ? error.message : error)}, undefined)`);
             },
             send: (data) => {
-                listen(wv, `window.saab.callback("${id}", undefined, ${data})`);
+                listen(`window.saab.callback("${id}", undefined, ${data})`);
             },
             json: (data) => {
-                listen(wv, `window.saab.callback("${id}", undefined, ${JSON.stringify(data)})`);
+                listen(`window.saab.callback("${id}", undefined, ${JSON.stringify(data)})`);
             }
         };
         const { handler, params } = findMatchingHandler(req) || {};
