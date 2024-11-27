@@ -2,33 +2,38 @@
 // Github repo located at https://github.com/stephen-j-oleary/Saab
 
 import { match, MatchFunction } from "path-to-regexp";
+import { Adapter } from "./adapters/types";
+
+export { ScriptableWebViewAdapter } from "./adapters/Scriptable";
+export { BrowserAdapter } from "./adapters/Browser";
+
+
+type HandlerFunc = (req: any, res: any) => Promise<void>;
 
 type Handler = {
   method: string | null,
   path: string,
   pathMatcher: MatchFunction<Partial<Record<string, string | string[]>>>,
-  handler: ReqHandler,
+  handler: HandlerFunc,
 }
-
-type ReqHandler = (path: string, handler: any) => void;
 
 type Saab = {
-  use: ReqHandler,
-  get: ReqHandler,
-  post: ReqHandler,
-  patch: ReqHandler,
-  put: ReqHandler,
-  delete: ReqHandler,
-  listen: (wv: any, js?: string) => Promise<any>,
+  use: (path: string, handler: HandlerFunc) => void,
+  get: (path: string, handler: HandlerFunc) => void,
+  post: (path: string, handler: HandlerFunc) => void,
+  patch: (path: string, handler: HandlerFunc) => void,
+  put: (path: string, handler: HandlerFunc) => void,
+  delete: (path: string, handler: HandlerFunc) => void,
+  listen: (js?: string) => Promise<any>,
 }
 
 
-export default function Saab() {
+export default function Saab(adapter: Adapter) {
   let isConfigured = false;
   const handlers: Handler[] = [];
 
-  async function config(wv: WebView) {
-    await wv.evaluateJavaScript(`
+  async function config() {
+    await adapter.runInContext(`
       window.saab = {
         randomCounter: 0,
         requests: [],
@@ -132,12 +137,12 @@ export default function Saab() {
         }
       };
       completion();
-    `, true);
+    `);
     isConfigured = true;
     return;
   }
 
-  function addHandler(method: string | null, path: string, handler: ReqHandler) {
+  function addHandler(method: string | null, path: string, handler: HandlerFunc) {
     const pathMatcher = match(path);
     handlers.push({
       method,
@@ -159,20 +164,20 @@ export default function Saab() {
   }
 
   // Listens for dispatch events from the WebView
-  async function listen(wv: WebView, js = "") {
-    if (!isConfigured) await config(wv);
+  async function listen(js = "") {
+    if (!isConfigured) await config();
 
-    const { id, ...req } = await wv.evaluateJavaScript(js, true);
+    const { id, ...req } = await adapter.runInContext(js) || {};
 
     const res = {
       error: (error: unknown) => {
-        listen(wv, `window.saab.callback("${id}", ${JSON.stringify(error instanceof Error ? error.message : error)}, undefined)`);
+        listen(`window.saab.callback("${id}", ${JSON.stringify(error instanceof Error ? error.message : error)}, undefined)`);
       },
       send: (data: unknown) => {
-        listen(wv, `window.saab.callback("${id}", undefined, ${data})`);
+        listen(`window.saab.callback("${id}", undefined, ${data})`);
       },
       json: (data: unknown) => {
-        listen(wv, `window.saab.callback("${id}", undefined, ${JSON.stringify(data)})`);
+        listen(`window.saab.callback("${id}", undefined, ${JSON.stringify(data)})`);
       }
     };
 
