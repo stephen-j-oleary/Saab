@@ -8,10 +8,6 @@
     "url": "https://github.com/stephen-j-oleary/saab.git"
   },
   "main": "index.js",
-  "scripts": {
-    "preuse": "npm install",
-    "use": "cpy ./index.js ~/Library/Mobile\\ Documents/iCloud\\~dk\\~simonbs\\~Scriptable/Documents --rename=Saab.js"
-  },
   "keywords": [
     "express",
     "axios",
