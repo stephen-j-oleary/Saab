@@ -3,6 +3,24 @@
 
 import { match } from "path-to-regexp";
 
+/**
+ * @typedef {(path: any, handler: any) => void} ReqHandler
+ */
+
+/**
+ * @typedef {Object} Saab
+ * @property {ReqHandler} use
+ * @property {ReqHandler} get
+ * @property {ReqHandler} post
+ * @property {ReqHandler} patch
+ * @property {ReqHandler} put
+ * @property {ReqHandler} delete
+ * @property {(wv: any, js?: string) => Promise<any>} listen
+ */
+
+/**
+ * @returns {Saab}
+ */
 export default function Saab() {
   let isConfigured = false;
   const handlers = [];
