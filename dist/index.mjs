@@ -1,31 +1,5 @@
-"use strict";
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
 // src/index.ts
-var src_exports = {};
-__export(src_exports, {
-  BrowserAdapter: () => BrowserAdapter,
-  ScriptableWebViewAdapter: () => ScriptableWebViewAdapter,
-  default: () => Saab
-});
-module.exports = __toCommonJS(src_exports);
-var import_path_to_regexp = require("path-to-regexp");
+import { match } from "path-to-regexp";
 
 // src/adapters/Scriptable.ts
 function ScriptableWebViewAdapter(wv) {
@@ -158,7 +132,7 @@ function Saab(adapter) {
     return;
   }
   function addHandler(method, path, handler) {
-    const pathMatcher = (0, import_path_to_regexp.match)(path);
+    const pathMatcher = match(path);
     handlers.push({
       method,
       path,
@@ -221,9 +195,9 @@ function Saab(adapter) {
   };
   return saab;
 }
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
+export {
   BrowserAdapter,
-  ScriptableWebViewAdapter
-});
-//# sourceMappingURL=index.js.map
+  ScriptableWebViewAdapter,
+  Saab as default
+};
+//# sourceMappingURL=index.mjs.map
