@@ -10,9 +10,25 @@ module.exports = function Saab() {
   async function config(wv) {
     await wv.evaluateJavaScript(`
       window.saab = {
+        randomCounter: 0,
         requests: [],
+        randomUUID() {
+          const incrementCounter = () => String(++this.randomCounter);
+
+          const randomizeTime = () => String(Date.now());
+
+          const randomizeNumbers = () => {
+            let text = String(Math.random());
+            for (let i = text.length; i < 19; ++i) {
+              text += "0";
+            }
+            return text.substring(2, 19);
+          }
+
+          return incrementCounter() + "-" + randomizeTime() + "-" + randomizeNumbers();
+        },
         async request(config) {
-          const id = crypto.randomUUID();
+          const id = this.randomUUID();
           let resolve, reject;
           const promise = new Promise((res, rej) => {
             resolve = res;
