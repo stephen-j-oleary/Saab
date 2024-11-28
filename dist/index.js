@@ -30,7 +30,7 @@ var import_path_to_regexp = require("path-to-regexp");
 // src/adapters/Scriptable.ts
 function ScriptableWebViewAdapter(wv) {
   return {
-    runInContext: (js2) => wv.evaluateJavaScript(js2, true)
+    runInContext: (js) => wv.evaluateJavaScript(js, true)
   };
 }
 
@@ -38,8 +38,7 @@ function ScriptableWebViewAdapter(wv) {
 function BrowserAdapter() {
   return {
     runInContext: (js) => new Promise((resolve, reject) => {
-      const completion = resolve;
-      eval(js);
+      new Function("window", "completion", js)(window, resolve);
     })
   };
 }
@@ -176,9 +175,9 @@ function Saab(adapter) {
     });
     return matchingHandlers[0] || null;
   }
-  async function listen(js2 = "") {
+  async function listen(js = "") {
     if (!isConfigured) await config();
-    const { id, ...req } = await adapter.runInContext(js2) || {};
+    const { id, ...req } = await adapter.runInContext(js) || {};
     const res = {
       error: (error) => {
         listen(`window.saab.callback("${id}", ${JSON.stringify(error instanceof Error ? error.message : error)}, undefined)`);
