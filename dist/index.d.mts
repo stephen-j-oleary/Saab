@@ -11,7 +11,7 @@ type Adapter = {
     }>;
 };
 
-declare function ScriptableWebViewAdapter(wv: WebView): Adapter;
+declare function ScriptableWebViewAdapter(wv: Pick<WebView, "evaluateJavaScript">): Adapter;
 
 declare function BrowserAdapter(): Adapter;
 
